@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Useless folder
+build
+.cache
+.DS_Store
