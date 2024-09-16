@@ -230,7 +230,7 @@ template <typename T>
 std::vector<uint32_t> Tensor<T>::shape() const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
-    return {data_.n_slices, data_.n_rows, data_.n_cols};
+    return {this->channels(), this->rows(), this->cols()};
 }
 
 template <typename T>
@@ -355,9 +355,9 @@ void Tensor<T>::Padding(const std::vector<uint32_t>& dims, T value)
     arma::Cube<T> padded_data(rows, cols, channels, arma::fill::zeros);
     padded_data.fill(value);
 
-    uint32_t min_channels = std::min(data_.n_slices, channels);
-    uint32_t min_rows = std::min(data_.n_rows, rows);
-    uint32_t min_cols = std::min(data_.n_cols, cols);
+    uint32_t min_channels = std::min(this->channels(), channels);
+    uint32_t min_rows = std::min(this->rows(), rows);
+    uint32_t min_cols = std::min(this->cols(), cols);
 
     for (uint32_t i = 0; i < min_channels; ++i) {
         for (uint32_t j = 0; j < min_rows; ++j) {
@@ -473,5 +473,9 @@ void Tensor<T>::Transform(const std::function<T(T)>& filter)
     CHECK(!data_.empty()) << "Tensor is empty";
     data_.transform(filter);
 }
+
+template class Tensor<float>;
+template class Tensor<int32_t>;
+template class Tensor<uint8_t>;
 
 } // namespace jeenifer
