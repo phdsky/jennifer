@@ -20,3 +20,4 @@ add_library(jennifer SHARED ${SOURCE_CODE})
 target_link_libraries(jennifer ${GLOG_LIBRARIES} ${ARMADILLO_LIBRARIES})
 
 add_subdirectory(test)
+add_subdirectory(demo)

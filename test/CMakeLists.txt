@@ -1,4 +1,4 @@
-project(test_jennifer)
+project(jennifer_test)
 find_package(GTest REQUIRED)
 
 file(GLOB TEST_SOURCES "*.cpp")
