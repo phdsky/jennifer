@@ -475,7 +475,6 @@ void Tensor<T>::Transform(const std::function<T(T)>& filter)
 }
 
 template class Tensor<float>;
-template class Tensor<int32_t>;
 template class Tensor<uint8_t>;
 
 } // namespace jeenifer
