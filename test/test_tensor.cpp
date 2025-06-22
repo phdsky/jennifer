@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include "jennifer/tensor.h"
 
 template <typename T>
@@ -155,21 +156,30 @@ TYPED_TEST(TensorTest, fill1)
     }
 }
 
-// TYPED_TEST(TensorTest, flatten1)
-// {
-//     Tensor<TypeParam> f3(3, 3, 3);
-//     std::vector<TypeParam> values;
-//     for (int i = 0; i < 27; ++i) {
-//         values.push_back(static_cast<TypeParam>(i));
-//     }
-//     f3.Fill(values);
-//     f3.Flatten(false);
-//     ASSERT_EQ(f3.channels(), 1);
-//     ASSERT_EQ(f3.rows(), 1);
-//     ASSERT_EQ(f3.cols(), 27);
-//     for (int i = 0; i < 27; ++i) {
-//         ASSERT_EQ(f3.index(i), values[i]);
-//     }
-// }
+TYPED_TEST(TensorTest, flatten1)
+{
+    Tensor<TypeParam> f3(3, 3, 3);
+    std::vector<TypeParam> values;
+    for (int i = 0; i < 27; ++i) {
+        values.push_back(static_cast<TypeParam>(i));
+    }
+    f3.Fill(values);
+    f3.Flatten(false);
+    ASSERT_EQ(f3.channels(), 1);
+    ASSERT_EQ(f3.rows(), 1);
+    ASSERT_EQ(f3.cols(), 27);
+    
+    ASSERT_EQ(f3.index(0), 0);
+    ASSERT_EQ(f3.index(1), 3);
+    ASSERT_EQ(f3.index(2), 6);
+
+    ASSERT_EQ(f3.index(3), 1);
+    ASSERT_EQ(f3.index(4), 4);
+    ASSERT_EQ(f3.index(5), 7);
+
+    ASSERT_EQ(f3.index(6), 2);
+    ASSERT_EQ(f3.index(7), 5);
+    ASSERT_EQ(f3.index(8), 8);
+}
 
 } // namespace jennifer

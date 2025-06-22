@@ -1,6 +1,6 @@
 #include <glog/logging.h>
 
-#include "jennifer/tensor.h"
+#include "tensor.h"
 
 namespace jennifer
 {

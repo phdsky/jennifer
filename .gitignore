@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Bazel files
+MODULE.bazel*
+
 # Useless folder
 build
 .cache
