@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
-#include "jennifer/tensor.h"
+#include "jennifer/tensor.hpp"
 
 template <typename T>
 class TensorTest : public ::testing::Test {
 protected:
 };
 
-// using TestTypes = ::testing::Types<float, uint8_t>;
+// using TestTypes = ::testing::Types<float, int32_t, uint8_t>;
 using TestTypes = ::testing::Types<float>;
 TYPED_TEST_SUITE(TensorTest, TestTypes);
 
