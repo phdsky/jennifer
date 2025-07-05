@@ -4,6 +4,8 @@
 
 namespace jennifer
 {
+namespace data
+{
 
 template <typename T>
 Tensor<T>::Tensor(uint32_t size)
@@ -16,9 +18,12 @@ template <typename T>
 Tensor<T>::Tensor(uint32_t rows, uint32_t cols)
 {
     data_ = arma::Cube<T>(rows, cols, 1);
-    if (rows == 1) {
+    if (rows == 1)
+    {
         shape_ = {cols};
-    } else {
+    }
+    else
+    {
         shape_ = {rows, cols};
     }
 }
@@ -27,17 +32,22 @@ template <typename T>
 Tensor<T>::Tensor(uint32_t channels, uint32_t rows, uint32_t cols)
 {
     data_ = arma::Cube<T>(rows, cols, channels);
-    if (channels == 1 && rows == 1) {
+    if (channels == 1 && rows == 1)
+    {
         shape_ = {cols};
-    } else if (channels == 1) {
+    }
+    else if (channels == 1)
+    {
         shape_ = {rows, cols};
-    } else {
+    }
+    else
+    {
         shape_ = {channels, rows, cols};
     }
 }
 
 template <typename T>
-Tensor<T>::Tensor(const std::vector<uint32_t>& shapes)
+Tensor<T>::Tensor(const std::vector<uint32_t> &shapes)
 {
     CHECK(!shapes.empty() && shapes.size() <= 3);
 
@@ -50,17 +60,22 @@ Tensor<T>::Tensor(const std::vector<uint32_t>& shapes)
     uint32_t cols = new_shapes[2];
 
     data_ = arma::Cube<T>(rows, cols, channels);
-    if (channels == 1 && rows == 1) {
+    if (channels == 1 && rows == 1)
+    {
         shape_ = {cols};
-    } else if (channels == 1) {
+    }
+    else if (channels == 1)
+    {
         shape_ = {rows, cols};
-    } else {
+    }
+    else
+    {
         shape_ = {channels, rows, cols};
     }
 }
 
 template <typename T>
-Tensor<T>::Tensor(T* data_ptr, uint32_t size)
+Tensor<T>::Tensor(T *data_ptr, uint32_t size)
 {
     CHECK_NE(data_ptr, nullptr);
     data_ = arma::Cube<T>(data_ptr, 1, size, 1, false, true);
@@ -68,33 +83,41 @@ Tensor<T>::Tensor(T* data_ptr, uint32_t size)
 }
 
 template <typename T>
-Tensor<T>::Tensor(T* data_ptr, uint32_t rows, uint32_t cols)
+Tensor<T>::Tensor(T *data_ptr, uint32_t rows, uint32_t cols)
 {
     CHECK_NE(data_ptr, nullptr);
     data_ = arma::Cube<T>(data_ptr, rows, cols, 1, false, true);
-    if (rows == 1) {
+    if (rows == 1)
+    {
         shape_ = {cols};
-    } else {
+    }
+    else
+    {
         shape_ = {rows, cols};
     }
 }
 
 template <typename T>
-Tensor<T>::Tensor(T* data_ptr, uint32_t channels, uint32_t rows, uint32_t cols)
+Tensor<T>::Tensor(T *data_ptr, uint32_t channels, uint32_t rows, uint32_t cols)
 {
     CHECK_NE(data_ptr, nullptr);
     data_ = arma::Cube<T>(data_ptr, rows, cols, channels, false, true);
-    if (channels == 1 && rows == 1) {
+    if (channels == 1 && rows == 1)
+    {
         shape_ = {cols};
-    } else if (channels == 1) {
+    }
+    else if (channels == 1)
+    {
         shape_ = {rows, cols};
-    } else {
+    }
+    else
+    {
         shape_ = {channels, rows, cols};
     }
 }
 
 template <typename T>
-Tensor<T>::Tensor(T* data_ptr, const std::vector<uint32_t>& shapes)
+Tensor<T>::Tensor(T *data_ptr, const std::vector<uint32_t> &shapes)
 {
     CHECK_NE(data_ptr, nullptr);
     CHECK(!shapes.empty() && shapes.size() <= 3);
@@ -108,11 +131,16 @@ Tensor<T>::Tensor(T* data_ptr, const std::vector<uint32_t>& shapes)
     uint32_t cols = new_shapes[2];
 
     data_ = arma::Cube<T>(data_ptr, rows, cols, channels, false, true);
-    if (channels == 1 && rows == 1) {
+    if (channels == 1 && rows == 1)
+    {
         shape_ = {cols};
-    } else if (channels == 1) {
+    }
+    else if (channels == 1)
+    {
         shape_ = {rows, cols};
-    } else {
+    }
+    else
+    {
         shape_ = {channels, rows, cols};
     }
 }
@@ -152,19 +180,19 @@ bool Tensor<T>::empty() const
 }
 
 template <typename T>
-arma::Cube<T>& Tensor<T>::get_data()
+arma::Cube<T> &Tensor<T>::get_data()
 {
     return data_;
 }
 
 template <typename T>
-const arma::Cube<T>& Tensor<T>::get_data() const
+const arma::Cube<T> &Tensor<T>::get_data() const
 {
     return data_;
 }
 
 template <typename T>
-void Tensor<T>::set_data(const arma::Cube<T>& data)
+void Tensor<T>::set_data(const arma::Cube<T> &data)
 {
     CHECK(data.n_rows == data_.n_rows && data.n_cols == data_.n_cols && data.n_slices == data_.n_slices)
         << "Tensor shape mismatch";
@@ -176,12 +204,18 @@ std::vector<T> Tensor<T>::values(bool row_major)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     std::vector<T> values(data_.size());
-    if (!row_major) {
+    if (!row_major)
+    {
         std::copy(data_.begin(), data_.end(), values.begin());
-    } else {
-        for (uint32_t i = 0; i < data_.n_slices; ++i) {
-            for (uint32_t j = 0; j < data_.n_rows; ++j) {
-                for (uint32_t k = 0; k < data_.n_cols; ++k) {
+    }
+    else
+    {
+        for (uint32_t i = 0; i < data_.n_slices; ++i)
+        {
+            for (uint32_t j = 0; j < data_.n_rows; ++j)
+            {
+                for (uint32_t k = 0; k < data_.n_cols; ++k)
+                {
                     values[i * data_.n_rows * data_.n_cols + j * data_.n_cols + k] = data_(j, k, i);
                 }
             }
@@ -191,7 +225,7 @@ std::vector<T> Tensor<T>::values(bool row_major)
 }
 
 template <typename T>
-T& Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col)
+T &Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(channel, data_.n_slices) << "Channel index out of range";
@@ -201,7 +235,7 @@ T& Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col)
 }
 
 template <typename T>
-const T& Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col) const
+const T &Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col) const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(channel, data_.n_slices) << "Channel index out of range";
@@ -211,7 +245,7 @@ const T& Tensor<T>::at(uint32_t channel, uint32_t row, uint32_t col) const
 }
 
 template <typename T>
-T& Tensor<T>::index(uint32_t offset)
+T &Tensor<T>::index(uint32_t offset)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(offset, data_.size()) << "Index out of range";
@@ -219,7 +253,7 @@ T& Tensor<T>::index(uint32_t offset)
 }
 
 template <typename T>
-const T& Tensor<T>::index(uint32_t offset) const
+const T &Tensor<T>::index(uint32_t offset) const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(offset, data_.size()) << "Index out of range";
@@ -243,21 +277,21 @@ const std::vector<uint32_t> Tensor<T>::raw_shape() const
 }
 
 template <typename T>
-T* Tensor<T>::data_ptr()
+T *Tensor<T>::data_ptr()
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     return data_.memptr();
 }
 
 template <typename T>
-const T* Tensor<T>::data_ptr() const
+const T *Tensor<T>::data_ptr() const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     return data_.memptr();
 }
 
 template <typename T>
-T* Tensor<T>::data_ptr(size_t offset)
+T *Tensor<T>::data_ptr(size_t offset)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(offset, data_.size()) << "Index out of range";
@@ -265,7 +299,7 @@ T* Tensor<T>::data_ptr(size_t offset)
 }
 
 template <typename T>
-const T* Tensor<T>::data_ptr(size_t offset) const
+const T *Tensor<T>::data_ptr(size_t offset) const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(offset, data_.size()) << "Index out of range";
@@ -273,7 +307,7 @@ const T* Tensor<T>::data_ptr(size_t offset) const
 }
 
 template <typename T>
-T* Tensor<T>::matrix_data_ptr(uint32_t index)
+T *Tensor<T>::matrix_data_ptr(uint32_t index)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(index, data_.n_slices) << "Channel index out of range";
@@ -281,7 +315,7 @@ T* Tensor<T>::matrix_data_ptr(uint32_t index)
 }
 
 template <typename T>
-const T* Tensor<T>::matrix_data_ptr(uint32_t index) const
+const T *Tensor<T>::matrix_data_ptr(uint32_t index) const
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_LT(index, data_.n_slices) << "Channel index out of range";
@@ -312,16 +346,22 @@ void Tensor<T>::Fill(T value)
 }
 
 template <typename T>
-void Tensor<T>::Fill(const std::vector<T>& values, bool row_major)
+void Tensor<T>::Fill(const std::vector<T> &values, bool row_major)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_EQ(values.size(), data_.size()) << "Values size mismatch";
-    if (!row_major) {
+    if (!row_major)
+    {
         std::copy(values.begin(), values.end(), data_.begin());
-    } else {
-        for (uint32_t i = 0; i < data_.n_slices; ++i) {
-            for (uint32_t j = 0; j < data_.n_rows; ++j) {
-                for (uint32_t k = 0; k < data_.n_cols; ++k) {
+    }
+    else
+    {
+        for (uint32_t i = 0; i < data_.n_slices; ++i)
+        {
+            for (uint32_t j = 0; j < data_.n_rows; ++j)
+            {
+                for (uint32_t k = 0; k < data_.n_cols; ++k)
+                {
                     data_(j, k, i) = values[i * data_.n_rows * data_.n_cols + j * data_.n_cols + k];
                 }
             }
@@ -338,7 +378,7 @@ void Tensor<T>::Flatten(bool row_major)
 }
 
 template <typename T>
-void Tensor<T>::Padding(const std::vector<uint32_t>& dims, T value)
+void Tensor<T>::Padding(const std::vector<uint32_t> &dims, T value)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_GE(dims.size(), 1);
@@ -359,9 +399,12 @@ void Tensor<T>::Padding(const std::vector<uint32_t>& dims, T value)
     uint32_t min_rows = std::min(this->rows(), rows);
     uint32_t min_cols = std::min(this->cols(), cols);
 
-    for (uint32_t i = 0; i < min_channels; ++i) {
-        for (uint32_t j = 0; j < min_rows; ++j) {
-            for (uint32_t k = 0; k < min_cols; ++k) {
+    for (uint32_t i = 0; i < min_channels; ++i)
+    {
+        for (uint32_t j = 0; j < min_rows; ++j)
+        {
+            for (uint32_t k = 0; k < min_cols; ++k)
+            {
                 padded_data(j, k, i) = data_(j, k, i);
             }
         }
@@ -402,7 +445,7 @@ void Tensor<T>::RandomUniform(T low, T high)
 }
 
 template <typename T>
-void Tensor<T>::Review(const std::vector<uint32_t>& shapes)
+void Tensor<T>::Review(const std::vector<uint32_t> &shapes)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_EQ(shape_.size(), 3) << "Tensor shape mismatch";
@@ -411,15 +454,18 @@ void Tensor<T>::Review(const std::vector<uint32_t>& shapes)
     const uint32_t target_rows = shapes[1];
     const uint32_t target_cols = shapes[2];
     CHECK_EQ(data_.size(), target_channels * target_rows * target_cols) << "Tensor size mismatch";
-    
+
     arma::Cube<T> target_data(target_rows, target_cols, target_channels, arma::fill::zeros);
     const uint32_t plane_size = target_rows * target_cols;
 
-    for (uint32_t channel = 0; channel < data_.n_slices; ++channel) {
+    for (uint32_t channel = 0; channel < data_.n_slices; ++channel)
+    {
         const uint32_t plane_start = channel * data_.n_rows * data_.n_cols;
-        for (uint32_t col = 0; col < data_.n_cols; ++col) {
-            const T* col_ptr = data_.slice_colptr(channel, col);
-            for (uint32_t row = 0; row < data_.n_rows; ++row) {
+        for (uint32_t col = 0; col < data_.n_cols; ++col)
+        {
+            const T *col_ptr = data_.slice_colptr(channel, col);
+            for (uint32_t row = 0; row < data_.n_rows; ++row)
+            {
                 const uint32_t pos_idx = plane_start + row * data_.n_cols + col;
                 const uint32_t dst_ch = pos_idx / plane_size;
                 const uint32_t dst_ch_offset = pos_idx % plane_size;
@@ -433,7 +479,7 @@ void Tensor<T>::Review(const std::vector<uint32_t>& shapes)
 }
 
 template <typename T>
-void Tensor<T>::Reshape(const std::vector<uint32_t>& shapes, bool row_major)
+void Tensor<T>::Reshape(const std::vector<uint32_t> &shapes, bool row_major)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     CHECK_GE(shapes.size(), 1);
@@ -442,25 +488,38 @@ void Tensor<T>::Reshape(const std::vector<uint32_t>& shapes, bool row_major)
     const size_t src_size = data_.size();
     const size_t dst_size = std::accumulate(shapes.begin(), shapes.end(), size_t(1), std::multiplies<size_t>());
     CHECK(src_size == dst_size);
-    if (!row_major) {
-        if (shapes.size() == 3) {
+    if (!row_major)
+    {
+        if (shapes.size() == 3)
+        {
             data_.reshape(shapes[1], shapes[2], shapes[0]);
             shape_ = {shapes[0], shapes[1], shapes[2]};
-        } else if (shapes.size() == 2) {
+        }
+        else if (shapes.size() == 2)
+        {
             data_.reshape(shapes[0], shapes[1], 1);
             shape_ = {shapes[0], shapes[1]};
-        } else {
+        }
+        else
+        {
             data_.reshape(1, shapes[0], 1);
             shape_ = {shapes[0]};
         }
-    } else {
-        if (shapes.size() == 3) {
+    }
+    else
+    {
+        if (shapes.size() == 3)
+        {
             this->Review({shapes[0], shapes[1], shapes[2]});
             shape_ = {shapes[0], shapes[1], shapes[2]};
-        } else if (shapes.size() == 2) {
+        }
+        else if (shapes.size() == 2)
+        {
             this->Review({1, shapes[0], shapes[1]});
             shape_ = {shapes[0], shapes[1]};
-        } else {
+        }
+        else
+        {
             this->Review({1, 1, shapes[0]});
             shape_ = {shapes[0]};
         }
@@ -468,7 +527,7 @@ void Tensor<T>::Reshape(const std::vector<uint32_t>& shapes, bool row_major)
 }
 
 template <typename T>
-void Tensor<T>::Transform(const std::function<T(T)>& filter)
+void Tensor<T>::Transform(const std::function<T(T)> &filter)
 {
     CHECK(!data_.empty()) << "Tensor is empty";
     data_.transform(filter);
@@ -478,4 +537,5 @@ template class Tensor<float>;
 template class Tensor<int32_t>;
 template class Tensor<uint8_t>;
 
-} // namespace jeenifer
+} // namespace data
+} // namespace jennifer

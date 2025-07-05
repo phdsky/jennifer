@@ -1,9 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "jennifer/tensor.hpp"
+#include "jennifer/data/tensor.hpp"
+
+using namespace jennifer::data;
 
 template <typename T>
-class TensorTest : public ::testing::Test {
+class TensorTest : public ::testing::Test
+{
 protected:
 };
 
@@ -26,7 +29,7 @@ TYPED_TEST(TensorTest, tensor_init1)
 TYPED_TEST(TensorTest, tensor_init1_1d)
 {
     Tensor<TypeParam> f1(3);
-    const auto& raw_shapes = f1.raw_shape();
+    const auto &raw_shapes = f1.raw_shape();
     ASSERT_EQ(raw_shapes.size(), 1);
     ASSERT_EQ(raw_shapes.at(0), 3);
 }
@@ -34,7 +37,7 @@ TYPED_TEST(TensorTest, tensor_init1_1d)
 TYPED_TEST(TensorTest, tensor_init1_2d)
 {
     Tensor<TypeParam> f1(32, 24);
-    const auto& raw_shapes = f1.raw_shape();
+    const auto &raw_shapes = f1.raw_shape();
     ASSERT_EQ(raw_shapes.size(), 2);
     ASSERT_EQ(raw_shapes.at(0), 32);
     ASSERT_EQ(raw_shapes.at(1), 24);
@@ -43,7 +46,7 @@ TYPED_TEST(TensorTest, tensor_init1_2d)
 TYPED_TEST(TensorTest, test_init1_2d_1)
 {
     Tensor<TypeParam> f1(1, 24);
-    const auto& raw_shapes = f1.raw_shape();
+    const auto &raw_shapes = f1.raw_shape();
     ASSERT_EQ(raw_shapes.size(), 1);
     ASSERT_EQ(raw_shapes.at(0), 24);
 }
@@ -141,14 +144,18 @@ TYPED_TEST(TensorTest, fill1)
 {
     Tensor<TypeParam> f3(3, 3, 3);
     std::vector<TypeParam> values;
-    for (int i = 0; i < 27; ++i) {
+    for (int i = 0; i < 27; ++i)
+    {
         values.push_back(static_cast<TypeParam>(i));
     }
     f3.Fill(values);
     int index = 0;
-    for (int c = 0; c < 3; ++c) {
-        for (int i = 0; i < f3.rows(); ++i) {
-            for (int j = 0; j < f3.cols(); ++j) {
+    for (int c = 0; c < 3; ++c)
+    {
+        for (int i = 0; i < f3.rows(); ++i)
+        {
+            for (int j = 0; j < f3.cols(); ++j)
+            {
                 ASSERT_EQ(f3.at(c, i, j), values[index]);
                 index += 1;
             }
@@ -160,7 +167,8 @@ TYPED_TEST(TensorTest, flatten1)
 {
     Tensor<TypeParam> f3(3, 3, 3);
     std::vector<TypeParam> values;
-    for (int i = 0; i < 27; ++i) {
+    for (int i = 0; i < 27; ++i)
+    {
         values.push_back(static_cast<TypeParam>(i));
     }
     f3.Fill(values);
@@ -168,7 +176,7 @@ TYPED_TEST(TensorTest, flatten1)
     ASSERT_EQ(f3.channels(), 1);
     ASSERT_EQ(f3.rows(), 1);
     ASSERT_EQ(f3.cols(), 27);
-    
+
     ASSERT_EQ(f3.index(0), 0);
     ASSERT_EQ(f3.index(1), 3);
     ASSERT_EQ(f3.index(2), 6);
